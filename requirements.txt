@@ -1,0 +1,14 @@
+opencv-python==4.5.3.56
+lxml
+tqdm
+tensorflow
+absl-py
+easydict
+matplotlib
+pillow
+pytesseract
+xlsxwriter
+openpyxl
+numpy
+pandas
+scipy
