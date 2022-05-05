@@ -13,12 +13,13 @@ _filter = True
 
 #----------------------------------------------------------------
 #path
-
+original_dataset = "data/01.2021-left"
 data_path = "detect_car/result_detect_car"
 detected_image_for_training_Path = "detect_car/training"
 detected_image_for_testing_Path ="detect_car/testing"
 coordinate_car_file = open("detect_car/list_coordinate_car.txt", "r")
-coordinate_for_testing = open("detect_car/coordinate_car_for_testing.txt", "w+")
+# coordinate_for_testing = open("detect_car/coordinate_car_for_testing.txt", "w+")
+list_image_for_testing = open("detect_car/list_images_for_testing.txt","w+")
 coordinate_for_training = open("detect_car/coordinate_car_for_training.txt", "w+")
 
 lines = coordinate_car_file.readlines()
@@ -63,8 +64,6 @@ if _filter:
         if list_img_name[i] == "ch01_00000000003032700.png":
             continue
         elif len(a_line) >= limited_cars_per_image:
-
-
             satisfying_count += 1
             if satisfying_count % 50 == 0 or satisfying_count == training_limited:
                 print(f"Training images processing...{satisfying_count}/{training_limited}")
@@ -89,18 +88,23 @@ if _filter:
             testing_image_count += 1
             if testing_image_count % 50 == 0 or testing_image_count == testing_total:
                 print(f"Testing images processing...{testing_image_count}/{testing_total}")
-
             a_line = json.loads(lines[i])
-            image = cv2.imread(os.path.join(data_path, list_img_name[i]))
-            cv2.imwrite(os.path.join(detected_image_for_testing_Path, list_img_name[i]), image)
-            coordinate_car_for_testing.append(a_line)
-            a_line = json.dumps(a_line) + "\n"
-            coordinate_for_testing.write(a_line)
+            # image = cv2.imread(os.path.join(data_path, list_img_name[i]))
+            # cv2.imwrite(os.path.join(detected_image_for_testing_Path, list_img_name[i]), image)
 
-    coordinate_for_testing.close()
+            image = cv2.imread(os.path.join(original_dataset, list_img_name[i]))
+            cv2.imwrite(os.path.join(detected_image_for_testing_Path, list_img_name[i]), image)
+
+            # coordinate_car_for_testing.append(a_line)
+            # a_line = json.dumps(a_line) + "\n"
+            # coordinate_for_testing.write(a_line)
+
+    # coordinate_for_testing.close()
+    list_image_for_testing.close()
 else:
     coordinate_for_training.close()
-    coordinate_for_testing.close()
+    # coordinate_for_testing.close()
+    list_image_for_testing.close()
 #----------------------------------------------------------------
 # manipulate/visualize/...
 print("Done!!!")

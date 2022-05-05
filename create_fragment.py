@@ -33,7 +33,7 @@ list_coordinate_car = []
 
 
 image = cv2.imread(input_image_path)
-image = rescale_frame(image, 0.7)
+# image = rescale_frame(image, 0.7)
 
 
 def get_X_mid(car, x):
@@ -79,7 +79,7 @@ while True:
         break
 print(image.shape)
 print(arr)
-if image.shape[1] - arr[-1] < 200 or image.shape[1] -arr[-2] < 200:
+if image.shape[1] - arr[-1] < int(0.7 * (arr[-1]-arr[-2])*(arr[-1]-arr[-2])/(arr[-2]-arr[-3])):# and image.shape[1] - arr[-2] < 200:
     arr =arr[:-1]
     # arr[-1] = int(image.shape[1])
     arr.append(int(image.shape[1]))
@@ -95,6 +95,7 @@ f1.close()
 # arr = [0,83,186,315,487,682,893,1113,1344]
 for fragment in arr:
     cv2.line(image, (fragment, 0), (fragment, image.shape[0]), color_line_fragment, 2)
+image = rescale_frame(image, 0.7)
 cv2.imshow("fragment created", image)
 cv2.imwrite(output_image_path, image)
 cv2.waitKey(0)
